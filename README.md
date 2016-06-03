@@ -11,6 +11,15 @@ PkgSearch is not yet an official package, so install using:
 Pkg.clone("https://github.com/essenciary/PkgSearch")
 ```
 
+It uses a few more packages, so you might need to install these too, first: 
+
+```
+Requests
+Sparklines
+MetadataTools
+Memoize
+```
+
 ## Searching for packages
 
 In order to search for packages, the `lookup(keyword1::AbstractString, keyword2::AbstractString, ...)` function is available. As this is designed as a REPL tool, the search results will be displayed in a human readable format. However, the function will return an array of results, that can be used programatically. 
