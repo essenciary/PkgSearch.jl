@@ -1,5 +1,7 @@
 julia 0.4
 
-Millboard
 Requests
+Sparklines
 MetadataTools
+Memoize
+Lumberjack
