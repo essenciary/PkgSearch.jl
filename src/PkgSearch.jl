@@ -77,7 +77,7 @@ function next(page_jump::Int = 1)
 end
 
 """
-  next([page_jump])
+  prev([page_jump])
 
 Performs a new lookup to bring the previous batch of $items_per_page results, if available. If page_jump is provided, it will go directly to that page. 
 """
