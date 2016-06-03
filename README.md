@@ -8,7 +8,7 @@ The search results are provided by a RESTful API so the search will be fast and 
 PkgSearch is not yet an official package, so install using: 
 
 ```julia
-Pkg.clone("https://github.com/essenciary/pkg_search")
+Pkg.clone("https://github.com/essenciary/PkgSearch")
 ```
 
 ## Searching for packages
@@ -95,7 +95,7 @@ Once you found a package that looks interesting, you can find out more about it 
 
 ```julia
 julia> PkgSearch.details("Mocking")
-WARNING: both Lumberjack and Base export "error"; uses of it in module PkgSearch must be qualified
+
 =====================================================
 Mocking
 -----------------------------------------------------
