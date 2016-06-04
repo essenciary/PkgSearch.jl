@@ -39,7 +39,7 @@ julia> PkgSearch.lookup("Redis")
 ```
 """
 function lookup(keywords...)
-  search.terms = join(map(x -> string(x), collect(keywords)), "+")
+  search.terms = join(map(x -> strip(string(x)), collect(keywords)), "+")
   _lookup(search.terms)
 end
 @memoize function _lookup(keywords::AbstractString; autorender::Bool = true, page::Int = 1)
@@ -52,7 +52,7 @@ end
   end
 
   try 
-    page_uri = search_api_uri * search_endpoint * "?q=" * keywords * "&page[number]=$(search.page)&page[size]=$items_per_page" 
+    page_uri = search_api_uri * search_endpoint * "?q=" * replace(keywords, " ", "+") * "&page[number]=$(search.page)&page[size]=$items_per_page" 
     DEBUG && Lumberjack.info(page_uri)
     search.results = Requests.get(page_uri) |> Requests.json  
   catch ex 
