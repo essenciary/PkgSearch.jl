@@ -135,7 +135,7 @@ end
 Sets the current page number
 """
 function current_page(page_number::Int)
-  page_number > 0 && search.page = page_number
+  page_number > 0 ? search.page = page_number : error("Invalid page number")
 end
 
 """
