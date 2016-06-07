@@ -41,6 +41,7 @@ julia> PkgSearch.lookup("Redis")
 function lookup(keywords...)
   search.terms = join(map(x -> strip(string(x)), collect(keywords)), "+")
   _lookup(search.terms)
+  search.page = 1
 end
 @memoize function _lookup(keywords::AbstractString; autorender::Bool = true, page::Int = 1)
   if isempty(strip(keywords))
@@ -81,8 +82,8 @@ end
 
 Performs a new lookup to bring the previous batch of $items_per_page results, if available. If page_jump is provided, it will go directly to that page. 
 """
-function prev(page_jump::Int = -1)
-  next(page_jump)
+function prev(page_jump::Int = 1)
+  next(page_jump * -1)
 end
 
 """
@@ -128,6 +129,13 @@ Returns the current page number
 """
 function current_page()
   search.page
+end
+
+"""
+Sets the current page number
+"""
+function current_page(page_number::Int)
+  page_number > 0 && search.page = page_number
 end
 
 """
