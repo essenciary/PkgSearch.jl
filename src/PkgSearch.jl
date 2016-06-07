@@ -40,8 +40,8 @@ julia> PkgSearch.lookup("Redis")
 """
 function lookup(keywords...)
   search.terms = join(map(x -> strip(string(x)), collect(keywords)), "+")
-  _lookup(search.terms)
   search.page = 1
+  _lookup(search.terms)
 end
 @memoize function _lookup(keywords::AbstractString; autorender::Bool = true, page::Int = 1)
   if isempty(strip(keywords))
