@@ -8,13 +8,13 @@ using Requests
 using Sparklines
 using MetadataTools
 using Memoize
-DEBUG && using Lumberjack
+DEBUG && using Lumberjack, Debug
 
 type SearchState
   page::Int
   terms::AbstractString
-  packages::Dict{AbstractString, Any}
-  results::Dict{AbstractString, Any}
+  packages::Dict{AbstractString,Any}
+  results::Dict{AbstractString,Any}
 end
 
 const search_api_uri = "http://genieframework.com/api/v1"
@@ -158,7 +158,7 @@ function process_results(search_results::Dict; autorender::Bool = false)
   search_results["data"]
 end
 
-function render(p::Dict{AbstractString, Any})
+function render{T<:AbstractString, U<:Any}(p::Dict{T,U})
   println("=====================================================")
   println(p["attributes"]["name"])
   println("-----------------------------------------------------")
@@ -170,7 +170,7 @@ function render(p::Dict{AbstractString, Any})
   println("_____________________________________________________\n\n")
 end
 
-function render_package(p::Dict{AbstractString, Any})
+function render_package{T<:AbstractString, U<:Any}(p::Dict{T,U})
   println("=====================================================")
   println(p["name"])
   println("-----------------------------------------------------")
