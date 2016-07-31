@@ -1,7 +1,5 @@
 module PkgSearch
 
-export lookup, details, next, prev, packages
-
 const DEBUG = false
 
 using Requests
