@@ -1,14 +1,11 @@
 module PkgSearch
-
-export lookup, details, next, prev, packages
-
 const DEBUG = false
 
 using Requests
 using Sparklines
 using MetadataTools
 using Memoize
-DEBUG && using Lumberjack, Debug
+DEBUG && using Lumberjack
 
 type SearchState
   page::Int
