@@ -1,17 +1,15 @@
 module PkgSearch
+
 const DEBUG = false
 
-using Requests
-using Sparklines
-using MetadataTools
-using Memoize
+using Requests, Sparklines, MetadataTools, Memoize
 DEBUG && using Lumberjack
 
 type SearchState
   page::Int
-  terms::AbstractString
-  packages::Dict{AbstractString,Any}
-  results::Dict{AbstractString,Any}
+  terms::String
+  packages::Dict{String,Any}
+  results::Dict{String,Any}
 end
 
 const search_api_uri = "http://genieframework.com/api/v1"
@@ -19,7 +17,7 @@ const search_endpoint = "/packages/search"
 const details_endpoint = "/packages"
 
 const items_per_page = 10
-const search = SearchState(1, "", Dict{AbstractString, Any}(), Dict{AbstractString, Any}())
+const search = SearchState(1, "", Dict{String,Any}(), Dict{String,Any}())
 
 """
   lookup(keyword1, keyword2, ...)
@@ -32,15 +30,16 @@ Returns the results and displays the info in the REPL.
 julia> PkgSearch.lookup("Redis")
 
 4-element Array{Any,1}:
- Dict{AbstractString,Any}("search"=>Dict{AbstractString,Any} ... )
+ Dict{String,Any}("search"=>Dict{String,Any} ... )
 ```
 """
 function lookup(keywords...)
   search.terms = join(map(x -> strip(string(x)), collect(keywords)), "+")
   search.page = 1
+
   _lookup(search.terms);
 end
-@memoize function _lookup(keywords::AbstractString; autorender::Bool = true, page::Int = 1)
+@memoize function _lookup(keywords::String; autorender::Bool = true, page::Int = 1)
   if isempty(strip(keywords))
     Base.error("Search term can not be empty")
   end
@@ -71,6 +70,7 @@ Performs a new lookup to bring the next batch of $items_per_page results, if ava
 """
 function next(page_jump::Int = 1)
   search.page += page_jump
+
   _lookup(search.terms, page = search.page)
 end
 
@@ -146,8 +146,9 @@ end
 end
 
 function process_results(search_results::Dict; autorender::Bool = false)
-  for p in search_results["data"]
-    p["search"]["headline"] = replace(p["search"]["headline"], r"(<b>|</b>)", "**")
+  for p in search_results["data"]["packages"]
+    p["search"] = Dict{String,String}()
+    p["search"]["headline"] = p["attributes"]["readme"][1:searchindex(p["attributes"]["readme"], "\n", 100)] |> String
     search.packages[p["attributes"]["name"]] = p
     autorender && render(p)
   end
